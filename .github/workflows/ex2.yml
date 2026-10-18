@@ -1,23 +1,41 @@
-name: CI
+name: Exo 2
 
 on: workflow_dispatch
 
 jobs:
-    test:
+    build:
         runs-on: ubuntu-latest
         steps:
           - name: Checkout du code
-            uses: actions/checkout@v4
+            uses: actions/checkout@v7
 
-          - name: Préparer l'environnement
-            run: echo "Preparing environment..."
-
+          - name: Installer Node
+            uses: actions/setup-node@v7
+            with:
+              node-version: '24.18.0'
           - name: Installer les dépendances
             run: npm ci
-
           - name: Lancer le build
+            run: npm run build
+          - name: Verifier que fichier build existe
             run: |
-              echo "Launching build..."
-              npm run build
-              echo "Build completed."
+              if [ ! -f dist/index.html ]; then
+                echo "::error::dist/index.html est introuvable"
+                exit 1
+              fi
+
+          - name: sauvegarder /dist comme artefact
+            uses: actions/upload-artifact@v7
+            with:
+              name: build
+              path: dist
+          - name: ecrire un resume du build
+            run: |
+              echo "## Résumé du build" >> $GITHUB_STEP_SUMMARY
+              echo "Le build a été complété avec succès." >> $GITHUB_STEP_SUMMARY
+              echo "- Commit : ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Branche : ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Runner : ${{ runner.os }}" >> $GITHUB_STEP_SUMMARY
+              echo "- Contenu de dist :" >> $GITHUB_STEP_SUMMARY
+              ls dist >> $GITHUB_STEP_SUMMARY
 
