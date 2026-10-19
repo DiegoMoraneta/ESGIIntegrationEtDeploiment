@@ -11,8 +11,8 @@ on:
     workflow_dispatch:
         inputs:
             debug:
-                type: string
-                default: true
+                type: boolean
+                default: false
 
 
 jobs:
@@ -36,7 +36,14 @@ jobs:
               run: |
                   echo "MY_VAR: ${{ github.event.inputs.MY_VARIABLE }}"
 
-            - name: Print Env Variables
-              run: |
-                  echo "Workflow env: $MY_WORKFLOW_VAR"
-                  echo "Overwritten env: $MY_OVERWRITTEN_VAR"
+                        - name: Print Env Variables
+                            env:
+                                    MY_OVERWRITTEN_VAR: 'step'
+                            run: |
+                                    echo "Workflow env: $MY_WORKFLOW_VAR"
+                                    echo "Overwritten env: $MY_OVERWRITTEN_VAR"
+
+                        - name: Print Env Variables Again
+                            run: |
+                                    echo "Workflow env: $MY_WORKFLOW_VAR"
+                                    echo "Overwritten env: $MY_OVERWRITTEN_VAR"
