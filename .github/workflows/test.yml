@@ -19,7 +19,7 @@ jobs:
 
             - name: Retrieve Variable
               run: |
-                  echo "MY_VARIABLE: ${{ github.event.inputs.MY_VARIABLE }}"
+                  echo "MY_VAR: ${{ github.event.inputs.MY_VARIABLE }}"
 
     
 
