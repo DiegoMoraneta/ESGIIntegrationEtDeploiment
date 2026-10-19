@@ -11,8 +11,8 @@ on:
     workflow_dispatch:
         inputs:
             debug:
-                type: boolean
-                default: false
+                type: string
+                default: true
 
 
 jobs:
