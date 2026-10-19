@@ -1,12 +1,14 @@
 name: Test Workflow Context
 
-on:
-    [workflow_dispatch, push]
+run-name: 06 - Contexts | DEBUG - ${{ inputs.debug }}
 
-configuration:
-    name: run-name
-    description: run-name allows you to define the name of the workflow run that appears on the UI
-    value: ${{ 'My custom workflow run name - ' + runner.os }}
+on:
+    push:
+    workflow_dispatch:
+        inputs:
+            debug:
+                type: boolean
+                default: false
 
 
 jobs:
